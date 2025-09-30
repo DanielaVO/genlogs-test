@@ -89,15 +89,29 @@ The frontend will open automatically at `http://localhost:3000`.
 
 ---
 
-## 🧪 Running Tests
+## 🧪 Pruebas (Testing)
 
-Unit tests are available for the frontend components using Jest and React Testing Library.
+Este proyecto incluye pruebas unitarias tanto para el backend como para el frontend.
 
-1.  **Navigate to the frontend directory**:
+### Backend (Python)
+
+1.  **Navega al directorio del backend** y activa tu entorno virtual:
+    ```sh
+    cd backend
+    source venv/bin/activate # o venv\Scripts\activate en Windows
+    ```
+2.  **Ejecuta las pruebas**:
+    ```sh
+    python -m unittest discover tests
+    ```
+
+### Frontend (React)
+
+1.  **Navega al directorio del frontend**:
     ```sh
     cd frontend
     ```
-2.  **Run the tests**:
+2.  **Ejecuta las pruebas**:
     ```sh
     npm test
     ```
