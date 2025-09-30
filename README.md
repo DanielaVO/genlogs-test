@@ -89,29 +89,27 @@ The frontend will open automatically at `http://localhost:3000`.
 
 ---
 
-## 🧪 Pruebas (Testing)
-
-Este proyecto incluye pruebas unitarias tanto para el backend como para el frontend.
+## 🧪 Testing
 
 ### Backend (Python)
 
-1.  **Navega al directorio del backend** y activa tu entorno virtual:
+1.  **Go to backend** and **activate the virtual environment**:
     ```sh
     cd backend
-    source venv/bin/activate # o venv\Scripts\activate en Windows
+    source venv/bin/activate # o venv\Scripts\activate on Windows
     ```
-2.  **Ejecuta las pruebas**:
+2.  **Run test**:
     ```sh
     python -m unittest discover tests
     ```
 
 ### Frontend (React)
 
-1.  **Navega al directorio del frontend**:
+1.  **Go to directory**:
     ```sh
     cd frontend
     ```
-2.  **Ejecuta las pruebas**:
+2.  **Run test**:
     ```sh
     npm test
     ```
