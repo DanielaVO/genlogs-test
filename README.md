@@ -96,7 +96,7 @@ The frontend will open automatically at `http://localhost:3000`.
 1.  **Go to backend** and **activate the virtual environment**:
     ```sh
     cd backend
-    source venv/bin/activate # o venv\Scripts\activate on Windows
+    source venv/bin/activate # On Windows, use `venv\Scripts\activate`
     ```
 2.  **Run test**:
     ```sh

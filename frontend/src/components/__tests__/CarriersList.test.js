@@ -3,7 +3,6 @@ import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import CarriersList from "../CarriersList";
 
-// Mock del ícono de Material-UI para evitar errores en el entorno de prueba
 jest.mock("@mui/icons-material/LocalShipping", () => () => <div data-testid="shipping-icon" />);
 
 const mockCarriers = [
@@ -18,7 +17,7 @@ const mockCarriers = [
 ];
 
 describe("CarriersList Component", () => {
-  test("muestra el estado 'No Results Yet' cuando no hay transportistas", () => {
+  test("shows 'No Results Yet' state when there are no carriers", () => {
     render(<CarriersList carriers={[]} />);
 
     expect(
@@ -27,16 +26,14 @@ describe("CarriersList Component", () => {
     expect(screen.queryByText("Active Carriers")).not.toBeInTheDocument();
   });
 
-  test("renderiza la lista de transportistas, la ruta y las estadísticas correctamente", () => {
+  test("renders the list of carriers, route, and statistics correctly", () => {
     const fromCity = "Los Angeles, CA";
     const toCity = "New York, NY";
     render(<CarriersList carriers={mockCarriers} from={fromCity} to={toCity} />);
 
-    // Verificar título y ruta
     expect(screen.getByText("Active Carriers")).toBeInTheDocument();
     expect(screen.getByText(`Route: ${fromCity} → ${toCity}`)).toBeInTheDocument();
 
-    // Verificar estadísticas
     const totalTrucks = mockCarriers.reduce((sum, c) => sum + c.trucks_per_day, 0); // 15 + 7 = 22
     const avgTrucks = (totalTrucks / mockCarriers.length).toFixed(1); // "11.0"
 
@@ -45,15 +42,11 @@ describe("CarriersList Component", () => {
 
     expect(screen.getByText(avgTrucks)).toBeInTheDocument();
     expect(screen.getByText("Avg per Carrier")).toBeInTheDocument();
-
-    // Verificar que los transportistas se rendericen
     expect(screen.getByText(/#1 Carrier A/)).toBeInTheDocument();
     expect(screen.getByText(/15 trucks\/day/)).toBeInTheDocument();
 
     expect(screen.getByText(/#2 Carrier B/)).toBeInTheDocument();
     expect(screen.getByText(/7 trucks\/day/)).toBeInTheDocument();
-
-    // Verificar que los íconos se rendericen (a través de su data-testid)
     expect(screen.getAllByTestId("shipping-icon")).toHaveLength(2);
   });
 });

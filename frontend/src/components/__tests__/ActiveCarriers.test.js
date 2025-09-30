@@ -1,9 +1,8 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import ActiveCarriers from "../ActiveCarriers";
 
-// Mock de los íconos de Material-UI para evitar errores en el entorno de prueba
 jest.mock("@mui/icons-material/PeopleAlt", () => () => <div data-testid="people-icon" />);
 jest.mock("@mui/icons-material/LocalShipping", () => () => <div data-testid="shipping-icon" />);
 jest.mock("@mui/icons-material/ExpandMore", () => () => <div data-testid="expand-more-icon" />);
@@ -43,7 +42,7 @@ const mockCarriers = [
 ];
 
 describe("ActiveCarriers Component", () => {
-  test("muestra el estado 'No Results Yet' cuando no hay transportistas", () => {
+  test("shows 'No Results Yet' state when there are no carriers", () => {
     render(<ActiveCarriers carriers={[]} />);
 
     expect(screen.getByText("No Results Yet")).toBeInTheDocument();
@@ -53,15 +52,12 @@ describe("ActiveCarriers Component", () => {
     expect(screen.queryByText("Total Trucks/Day")).not.toBeInTheDocument();
   });
 
-  test("renderiza la lista de transportistas y las estadísticas correctamente", () => {
+  test("renders the list of carriers and statistics correctly", () => {
     render(<ActiveCarriers carriers={mockCarriers} />);
-
-    // Verificar el título
     expect(screen.getByText("Active Carriers")).toBeInTheDocument();
 
-    // Verificar estadísticas
-    const totalTrucks = mockCarriers.reduce((sum, c) => sum + c.trucks_per_day, 0); // 15 + 10 = 25
-    const avgPerCarrier = Math.round(totalTrucks / mockCarriers.length); // 25 / 2 = 13
+    const totalTrucks = mockCarriers.reduce((sum, c) => sum + c.trucks_per_day, 0);
+    const avgPerCarrier = Math.round(totalTrucks / mockCarriers.length);
 
     expect(screen.getByText(totalTrucks.toString())).toBeInTheDocument();
     expect(screen.getByText("Total Trucks/Day")).toBeInTheDocument();
@@ -70,37 +66,27 @@ describe("ActiveCarriers Component", () => {
     expect(screen.getByText("Avg per Carrier")).toBeInTheDocument();
 
     expect(screen.getByText("2 carriers found")).toBeInTheDocument();
-
-    // Verificar que los nombres de los transportistas estén en el documento
     expect(screen.getByText("Carrier A")).toBeInTheDocument();
     expect(screen.getByText("Carrier B")).toBeInTheDocument();
   });
-
-  test("expande y colapsa los detalles de un transportista al hacer clic", () => {
+  test("expands and collapses carrier details on click", async () => {
     render(<ActiveCarriers carriers={mockCarriers} />);
 
-    // Inicialmente, los detalles del camión no deben ser visibles
     expect(screen.queryByText(/Plate: TRK-001/)).not.toBeInTheDocument();
-
-    // Encontrar todos los botones de expansión. Hay uno por cada Card.
     const expandButtons = screen.getAllByRole("button");
-
-    // Hacer clic en el botón del primer transportista para expandir
     fireEvent.click(expandButtons[0]);
 
-    // Ahora los detalles del primer camión deben ser visibles
-    expect(screen.getByText(/Plate: TRK-001/)).toBeInTheDocument();
-    expect(
-      screen.getByText(/Driver: John Doe | Capacity: 20 tons | Status: On-route/)
-    ).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText(/Plate: TRK-001/)).toBeInTheDocument();
+      expect(
+        screen.getByText(/Driver: John Doe | Capacity: 20 tons | Status: On-route/)
+      ).toBeInTheDocument();
+    });
 
-    // Los detalles del segundo camión no deben ser visibles
     expect(screen.queryByText(/Plate: TRK-002/)).not.toBeInTheDocument();
-
-    // Hacer clic de nuevo en el mismo botón para colapsar
     fireEvent.click(expandButtons[0]);
-
-    // Los detalles del primer camión ya no deben ser visibles
-    expect(screen.queryByText(/Plate: TRK-001/)).not.toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.queryByText(/Plate: TRK-001/)).not.toBeInTheDocument();
+    });
   });
 });

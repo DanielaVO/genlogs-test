@@ -22,11 +22,9 @@ class TestMainAPI(unittest.TestCase):
         """
         Tests the dependency validation: it should fail if fields are missing.
         """
-        # Case 1: Missing 'to_city'
         response_1 = self.client.post("/v1/search", json={"from_city": "NYC"})
-        self.assertEqual(response_1.status_code, 422) # FastAPI returns 422 for Pydantic validation errors
+        self.assertEqual(response_1.status_code, 422)
 
-        # Case 2: Empty fields
         response_2 = self.client.post("/v1/search", json={"from_city": "", "to_city": "WDC"})
         self.assertEqual(response_2.status_code, 400)
         self.assertEqual(response_2.json()["detail"], "The 'from_city' and 'to_city' fields are required for the search.")
@@ -36,7 +34,6 @@ class TestMainAPI(unittest.TestCase):
         """
         Tests a success case for the /v1/search endpoint.
         """
-        # Configure the mock to simulate the service response
         mock_carriers_data = [
             {
                 "name": "Test Carrier",
@@ -51,8 +48,7 @@ class TestMainAPI(unittest.TestCase):
         
         payload = {"from_city": "New York", "to_city": "Washington"}
         response = self.client.post("/v1/search", json=payload)
-        
-        # Verifications
+  
         self.assertEqual(response.status_code, 200)
         mock_get_carriers.assert_called_once_with("New York", "Washington")
         
@@ -66,15 +62,12 @@ class TestMainAPI(unittest.TestCase):
         """
         Tests the handling of 500 errors in the /v1/search endpoint.
         """
-        # Configure the mock to raise an exception
         mock_get_carriers.side_effect = Exception("Database connection failed")
 
-        # Redirect stdout to hide the expected error print from the console
         with patch('sys.stdout', new_callable=io.StringIO):
             payload = {"from_city": "New York", "to_city": "Washington"}
             response = self.client.post("/v1/search", json=payload)
 
-            # Verifications
             self.assertEqual(response.status_code, 500)
             self.assertEqual(response.json()["detail"], "An unexpected error occurred while processing the request.")
 
