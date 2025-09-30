@@ -1,17 +1,18 @@
 import unittest
 from unittest.mock import patch
+import io
 from fastapi.testclient import TestClient
 from app.main import app
 
 class TestMainAPI(unittest.TestCase):
 
     def setUp(self):
-        """Configura el cliente de prueba antes de cada test."""
+        """Sets up the test client before each test."""
         self.client = TestClient(app)
 
     def test_health_check(self):
         """
-        Prueba que el endpoint /health funcione correctamente.
+        Tests that the /health endpoint works correctly.
         """
         response = self.client.get("/health")
         self.assertEqual(response.status_code, 200)
@@ -19,13 +20,13 @@ class TestMainAPI(unittest.TestCase):
 
     def test_search_routes_missing_payload_fields(self):
         """
-        Prueba la validación de la dependencia: debe fallar si faltan campos.
+        Tests the dependency validation: it should fail if fields are missing.
         """
-        # Caso 1: Falta 'to_city'
+        # Case 1: Missing 'to_city'
         response_1 = self.client.post("/v1/search", json={"from_city": "NYC"})
-        self.assertEqual(response_1.status_code, 422) # FastAPI devuelve 422 para errores de validación de Pydantic
+        self.assertEqual(response_1.status_code, 422) # FastAPI returns 422 for Pydantic validation errors
 
-        # Caso 2: Campos vacíos
+        # Case 2: Empty fields
         response_2 = self.client.post("/v1/search", json={"from_city": "", "to_city": "WDC"})
         self.assertEqual(response_2.status_code, 400)
         self.assertEqual(response_2.json()["detail"], "The 'from_city' and 'to_city' fields are required for the search.")
@@ -33,9 +34,9 @@ class TestMainAPI(unittest.TestCase):
     @patch('app.main.get_carriers')
     def test_search_routes_success(self, mock_get_carriers):
         """
-        Prueba un caso de éxito para el endpoint /v1/search.
+        Tests a success case for the /v1/search endpoint.
         """
-        # Configuración del mock para simular la respuesta del servicio
+        # Configure the mock to simulate the service response
         mock_carriers_data = [
             {
                 "name": "Test Carrier",
@@ -51,7 +52,7 @@ class TestMainAPI(unittest.TestCase):
         payload = {"from_city": "New York", "to_city": "Washington"}
         response = self.client.post("/v1/search", json=payload)
         
-        # Verificaciones
+        # Verifications
         self.assertEqual(response.status_code, 200)
         mock_get_carriers.assert_called_once_with("New York", "Washington")
         
@@ -63,17 +64,19 @@ class TestMainAPI(unittest.TestCase):
     @patch('app.main.get_carriers')
     def test_search_routes_internal_error(self, mock_get_carriers):
         """
-        Prueba el manejo de errores 500 en el endpoint /v1/search.
+        Tests the handling of 500 errors in the /v1/search endpoint.
         """
-        # Configuramos el mock para que lance una excepción
+        # Configure the mock to raise an exception
         mock_get_carriers.side_effect = Exception("Database connection failed")
-        
-        payload = {"from_city": "New York", "to_city": "Washington"}
-        response = self.client.post("/v1/search", json=payload)
-        
-        # Verificaciones
-        self.assertEqual(response.status_code, 500)
-        self.assertEqual(response.json()["detail"], "An unexpected error occurred while processing the request.")
+
+        # Redirect stdout to hide the expected error print from the console
+        with patch('sys.stdout', new_callable=io.StringIO):
+            payload = {"from_city": "New York", "to_city": "Washington"}
+            response = self.client.post("/v1/search", json=payload)
+
+            # Verifications
+            self.assertEqual(response.status_code, 500)
+            self.assertEqual(response.json()["detail"], "An unexpected error occurred while processing the request.")
 
 if __name__ == '__main__':
     unittest.main()
