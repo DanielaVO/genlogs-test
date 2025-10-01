@@ -3,10 +3,18 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import ActiveCarriers from "../ActiveCarriers";
 
-jest.mock("@mui/icons-material/PeopleAlt", () => () => <div data-testid="people-icon" />);
-jest.mock("@mui/icons-material/LocalShipping", () => () => <div data-testid="shipping-icon" />);
-jest.mock("@mui/icons-material/ExpandMore", () => () => <div data-testid="expand-more-icon" />);
-jest.mock("@mui/icons-material/ExpandLess", () => () => <div data-testid="expand-less-icon" />);
+jest.mock("@mui/icons-material/PeopleAlt", () => () => (
+  <div data-testid="people-icon" />
+));
+jest.mock("@mui/icons-material/LocalShipping", () => () => (
+  <div data-testid="shipping-icon" />
+));
+jest.mock("@mui/icons-material/ExpandMore", () => () => (
+  <div data-testid="expand-more-icon" />
+));
+jest.mock("@mui/icons-material/ExpandLess", () => () => (
+  <div data-testid="expand-less-icon" />
+));
 
 const mockCarriers = [
   {
@@ -56,7 +64,10 @@ describe("ActiveCarriers Component", () => {
     render(<ActiveCarriers carriers={mockCarriers} />);
     expect(screen.getByText("Active Carriers")).toBeInTheDocument();
 
-    const totalTrucks = mockCarriers.reduce((sum, c) => sum + c.trucks_per_day, 0);
+    const totalTrucks = mockCarriers.reduce(
+      (sum, c) => sum + c.trucks_per_day,
+      0
+    );
     const avgPerCarrier = Math.round(totalTrucks / mockCarriers.length);
 
     expect(screen.getByText(totalTrucks.toString())).toBeInTheDocument();
@@ -79,7 +90,9 @@ describe("ActiveCarriers Component", () => {
     await waitFor(() => {
       expect(screen.getByText(/Plate: TRK-001/)).toBeInTheDocument();
       expect(
-        screen.getByText(/Driver: John Doe | Capacity: 20 tons | Status: On-route/)
+        screen.getByText(
+          /Driver: John Doe | Capacity: 20 tons | Status: On-route/
+        )
       ).toBeInTheDocument();
     });
 

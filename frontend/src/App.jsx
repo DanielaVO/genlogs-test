@@ -34,7 +34,8 @@ export default function App() {
             Move Freight on Cheat Mode
           </Typography>
           <Typography variant="body1" color="text.secondary">
-            Freight Intelligence on every carrier, shipper, and asset via a nationwide sensor network
+            Freight Intelligence on every carrier, shipper, and asset via a
+            nationwide sensor network
           </Typography>
         </Box>
 

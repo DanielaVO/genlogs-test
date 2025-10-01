@@ -3,7 +3,9 @@ import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import CarriersList from "../CarriersList";
 
-jest.mock("@mui/icons-material/LocalShipping", () => () => <div data-testid="shipping-icon" />);
+jest.mock("@mui/icons-material/LocalShipping", () => () => (
+  <div data-testid="shipping-icon" />
+));
 
 const mockCarriers = [
   {
@@ -21,7 +23,9 @@ describe("CarriersList Component", () => {
     render(<CarriersList carriers={[]} />);
 
     expect(
-      screen.getByText("No Results Yet — Search for a route to see active carriers")
+      screen.getByText(
+        "No Results Yet — Search for a route to see active carriers"
+      )
     ).toBeInTheDocument();
     expect(screen.queryByText("Active Carriers")).not.toBeInTheDocument();
   });
@@ -29,12 +33,19 @@ describe("CarriersList Component", () => {
   test("renders the list of carriers, route, and statistics correctly", () => {
     const fromCity = "Los Angeles, CA";
     const toCity = "New York, NY";
-    render(<CarriersList carriers={mockCarriers} from={fromCity} to={toCity} />);
+    render(
+      <CarriersList carriers={mockCarriers} from={fromCity} to={toCity} />
+    );
 
     expect(screen.getByText("Active Carriers")).toBeInTheDocument();
-    expect(screen.getByText(`Route: ${fromCity} → ${toCity}`)).toBeInTheDocument();
+    expect(
+      screen.getByText(`Route: ${fromCity} → ${toCity}`)
+    ).toBeInTheDocument();
 
-    const totalTrucks = mockCarriers.reduce((sum, c) => sum + c.trucks_per_day, 0); // 15 + 7 = 22
+    const totalTrucks = mockCarriers.reduce(
+      (sum, c) => sum + c.trucks_per_day,
+      0
+    ); // 15 + 7 = 22
     const avgTrucks = (totalTrucks / mockCarriers.length).toFixed(1); // "11.0"
 
     expect(screen.getByText(totalTrucks.toString())).toBeInTheDocument();

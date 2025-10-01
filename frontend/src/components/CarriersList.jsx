@@ -53,7 +53,13 @@ export default function CarriersList({ carriers, from, to }) {
       <Stack spacing={2}>
         {carriers.map((c, i) => (
           <Card key={i} variant="outlined">
-            <CardContent sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <CardContent
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
               <Box>
                 <Typography variant="subtitle1" fontWeight="bold">
                   #{i + 1} {c.name}

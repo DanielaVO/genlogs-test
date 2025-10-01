@@ -14,6 +14,8 @@ describe("Header Component", () => {
     expect(screen.getByText("Genlogs")).toBeInTheDocument();
     expect(screen.getByText("Truck Carrier Tracking")).toBeInTheDocument();
     expect(screen.getByTestId("shipping-icon")).toBeInTheDocument();
-    expect(screen.getByText("Every Truck. Every Shipper. Every Lane.")).toBeInTheDocument();
+    expect(
+      screen.getByText("Every Truck. Every Shipper. Every Lane.")
+    ).toBeInTheDocument();
   });
 });

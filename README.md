@@ -89,6 +89,59 @@ The frontend will open automatically at `http://localhost:3000`.
 
 ---
 
+## 💅 Code Quality
+
+### Backend (Python)
+
+This project uses `black` for code formatting and `ruff` for linting and import sorting in the backend.
+
+1.  **Go to the backend directory** and activate the virtual environment:
+    ```sh
+    cd backend
+    source venv/bin/activate # On Windows, use `venv\Scripts\activate`
+    ```
+
+2.  **Install development dependencies**:
+    ```sh
+    pip install -r requirements-dev.txt
+    ```
+
+3.  **Run the tools**:
+    The recommended way to run the tools is through pre-commit, but you can also run them manually:
+    ```sh
+    # Format code with black and ruff
+    python -m black .
+    python -m ruff format .
+
+    # Check for linting issues and fix them
+    python -m ruff check . --fix
+    ```
+
+### Frontend (React)
+
+The frontend uses **ESLint** for linting and **Prettier** for code formatting.
+
+1.  **Go to the frontend directory**:
+    ```sh
+    cd frontend
+    ```
+
+2.  **Install development dependencies**:
+    If you haven't already, install Prettier:
+    ```sh
+    npm install --save-dev --save-exact prettier
+    ```
+
+3.  **Run the tools**:
+    ```sh
+    # Check for linting issues with ESLint
+    npm run lint
+
+    # Format code with Prettier
+    npx prettier . --write
+    ```
+    *Note: You may need to add a `lint` script to your `frontend/package.json` if it doesn't exist: `"lint": "eslint ."`*
+
 ## 🧪 Testing
 
 ### Backend (Python)
@@ -112,37 +165,6 @@ The frontend will open automatically at `http://localhost:3000`.
 2.  **Run test**:
     ```sh
     npm test
-    ```
-
----
-
-## 💅 Code Quality
-
-This project uses `black` for code formatting, `isort` for import sorting, and `ruff` for linting in the backend.
-
-1.  **Go to the backend directory** and activate the virtual environment:
-    ```sh
-    cd backend
-    source venv/bin/activate # On Windows, use `venv\Scripts\activate`
-    ```
-
-2.  **Install development dependencies**:
-    ```sh
-    pip install -r requirements-dev.txt
-    ```
-
-3.  **Run the tools**:
-    The most reliable way to run the tools is by using `python -m <tool>`. This avoids problems with the system PATH.
-    ```sh
-    # Formatear código con black y ruff
-    python -m black .
-    python -m ruff format .
-
-    # Check for linting issues with ruff
-    python -m ruff check .
-
-    # Let ruff try to fix issues automatically (including import order)
-    python -m ruff check . --fix
     ```
 
 ---

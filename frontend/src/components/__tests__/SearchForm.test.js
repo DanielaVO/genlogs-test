@@ -4,7 +4,9 @@ import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 import SearchForm from "../SearchForm";
 
-jest.mock("@mui/icons-material/Search", () => () => <div data-testid="search-icon" />);
+jest.mock("@mui/icons-material/Search", () => () => (
+  <div data-testid="search-icon" />
+));
 
 jest.mock("../CityAutocomplete", () => ({ label, value, onChange }) => (
   <input
@@ -30,7 +32,9 @@ describe("SearchForm Component", () => {
     expect(screen.getByLabelText("From City")).toBeInTheDocument();
     expect(screen.getByLabelText("To City")).toBeInTheDocument();
 
-    const searchButton = screen.getByRole("button", { name: /Search Routes & Carriers/i });
+    const searchButton = screen.getByRole("button", {
+      name: /Search Routes & Carriers/i,
+    });
     expect(searchButton).toBeInTheDocument();
     expect(searchButton).toBeDisabled();
   });
@@ -40,7 +44,9 @@ describe("SearchForm Component", () => {
 
     const fromInput = screen.getByLabelText("From City");
     const toInput = screen.getByLabelText("To City");
-    const searchButton = screen.getByRole("button", { name: /Search Routes & Carriers/i });
+    const searchButton = screen.getByRole("button", {
+      name: /Search Routes & Carriers/i,
+    });
 
     await userEvent.type(fromInput, "New York");
     expect(searchButton).toBeDisabled();
@@ -57,7 +63,9 @@ describe("SearchForm Component", () => {
 
     const fromInput = screen.getByLabelText("From City");
     const toInput = screen.getByLabelText("To City");
-    const searchButton = screen.getByRole("button", { name: /Search Routes & Carriers/i });
+    const searchButton = screen.getByRole("button", {
+      name: /Search Routes & Carriers/i,
+    });
 
     await userEvent.type(fromInput, "Chicago");
     await userEvent.type(toInput, "Miami");

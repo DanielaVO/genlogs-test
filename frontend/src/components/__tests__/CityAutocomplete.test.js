@@ -24,7 +24,11 @@ describe("CityAutocomplete Component", () => {
 
   test("renders correctly with the label and initial value", () => {
     render(
-      <CityAutocomplete label="From City" value="New York" onChange={mockOnChange} />
+      <CityAutocomplete
+        label="From City"
+        value="New York"
+        onChange={mockOnChange}
+      />
     );
 
     const input = screen.getByRole("combobox");
@@ -44,7 +48,11 @@ describe("CityAutocomplete Component", () => {
 
     // Re-render the component with the new value, simulating parent state update
     rerender(
-      <CityAutocomplete label="To City" value="Los Angeles" onChange={mockOnChange} />
+      <CityAutocomplete
+        label="To City"
+        value="Los Angeles"
+        onChange={mockOnChange}
+      />
     );
 
     expect(mockGetPlacePredictions).toHaveBeenCalledTimes(1);
@@ -69,16 +77,19 @@ describe("CityAutocomplete Component", () => {
     });
 
     const { rerender } = render(
-      <CityAutocomplete
-        label="To City"
-        value=""
-        onChange={mockOnChange} />
+      <CityAutocomplete label="To City" value="" onChange={mockOnChange} />
     );
 
     const input = screen.getByRole("combobox");
     fireEvent.focus(input);
     fireEvent.change(input, { target: { value: "Los Angeles" } });
-    rerender(<CityAutocomplete label="To City" value="Los Angeles" onChange={mockOnChange} />);
+    rerender(
+      <CityAutocomplete
+        label="To City"
+        value="Los Angeles"
+        onChange={mockOnChange}
+      />
+    );
 
     await waitFor(() => {
       expect(screen.getByText("Los Angeles, CA, USA")).toBeInTheDocument();
@@ -87,7 +98,9 @@ describe("CityAutocomplete Component", () => {
   });
 
   test("does not call the API if the input is empty", () => {
-    render(<CityAutocomplete label="From City" value="" onChange={mockOnChange} />);
+    render(
+      <CityAutocomplete label="From City" value="" onChange={mockOnChange} />
+    );
     expect(mockGetPlacePredictions).not.toHaveBeenCalled();
   });
 });

@@ -3,9 +3,15 @@ import { render, screen, waitFor, within } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import RouteVisualization from "../RouteVisualization";
 
-jest.mock("@mui/icons-material/Route", () => () => <div data-testid="route-icon" />);
-jest.mock("@mui/icons-material/DirectionsCar", () => () => <div data-testid="car-icon" />);
-jest.mock("@mui/icons-material/Timeline", () => () => <div data-testid="timeline-icon" />);
+jest.mock("@mui/icons-material/Route", () => () => (
+  <div data-testid="route-icon" />
+));
+jest.mock("@mui/icons-material/DirectionsCar", () => () => (
+  <div data-testid="car-icon" />
+));
+jest.mock("@mui/icons-material/Timeline", () => () => (
+  <div data-testid="timeline-icon" />
+));
 
 const mockUseJsApiLoader = jest.fn();
 jest.mock("@react-google-maps/api", () => ({

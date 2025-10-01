@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Autocomplete, TextField } from "@mui/material";
 
-export default function CityAutocomplete({ label, value, onChange, fullWidth }) {
+export default function CityAutocomplete({
+  label,
+  value,
+  onChange,
+  fullWidth,
+}) {
   const [options, setOptions] = useState([]);
 
   useEffect(() => {

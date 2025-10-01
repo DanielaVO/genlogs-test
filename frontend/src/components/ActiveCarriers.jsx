@@ -29,7 +29,9 @@ export default function ActiveCarriers({ carriers }) {
 
   const hasResults = carriers && carriers.length > 0;
   const totalTrucks = carriers.reduce((acc, c) => acc + c.trucks_per_day, 0);
-  const avgPerCarrier = hasResults ? Math.round(totalTrucks / carriers.length) : 0;
+  const avgPerCarrier = hasResults
+    ? Math.round(totalTrucks / carriers.length)
+    : 0;
 
   return (
     <Paper
@@ -78,10 +80,7 @@ export default function ActiveCarriers({ carriers }) {
               </Typography>
             </Box>
             <Box>
-              <Chip
-                label={`${carriers.length} carriers found`}
-                size="small"
-              />
+              <Chip label={`${carriers.length} carriers found`} size="small" />
             </Box>
           </Box>
 
@@ -114,11 +113,19 @@ export default function ActiveCarriers({ carriers }) {
                       </Box>
                     </Box>
                     <IconButton onClick={() => handleToggle(index)}>
-                      {expanded === index ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                      {expanded === index ? (
+                        <ExpandLessIcon />
+                      ) : (
+                        <ExpandMoreIcon />
+                      )}
                     </IconButton>
                   </Box>
 
-                  <Collapse in={expanded === index} timeout="auto" unmountOnExit>
+                  <Collapse
+                    in={expanded === index}
+                    timeout="auto"
+                    unmountOnExit
+                  >
                     <List dense sx={{ mt: 2 }}>
                       {carrier.trucks.map((truck) => (
                         <ListItem key={truck.id}>

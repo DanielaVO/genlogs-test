@@ -93,7 +93,8 @@ export default function RouteVisualization({ from, to }) {
                 directions={{ routes: [route], request: {} }}
                 options={{
                   polylineOptions: {
-                    strokeColor: idx === 0 ? "blue" : idx === 1 ? "green" : "orange",
+                    strokeColor:
+                      idx === 0 ? "blue" : idx === 1 ? "green" : "orange",
                     strokeOpacity: 0.7,
                     strokeWeight: 5,
                   },
@@ -111,7 +112,11 @@ export default function RouteVisualization({ from, to }) {
             <List>
               {routes.map((route, idx) => {
                 const leg = route.legs[0];
-                const icons = [<RouteIcon />, <DirectionsCarIcon />, <TimelineIcon />];
+                const icons = [
+                  <RouteIcon />,
+                  <DirectionsCarIcon />,
+                  <TimelineIcon />,
+                ];
                 const colors = ["primary", "success", "warning"];
                 return (
                   <React.Fragment key={idx}>
@@ -129,14 +134,26 @@ export default function RouteVisualization({ from, to }) {
                       </ListItemIcon>
                       <ListItemText
                         primary={
-                          <Typography variant="body1" fontWeight="bold" color={`${colors[idx]}.main`}>
+                          <Typography
+                            variant="body1"
+                            fontWeight="bold"
+                            color={`${colors[idx]}.main`}
+                          >
                             Route {idx + 1}
                           </Typography>
                         }
                         secondary={
                           <Box sx={{ display: "flex", gap: 1, mt: 0.5 }}>
-                            <Chip label={leg.distance.text} size="small" color={colors[idx]} />
-                            <Chip label={leg.duration.text} size="small" variant="outlined" />
+                            <Chip
+                              label={leg.distance.text}
+                              size="small"
+                              color={colors[idx]}
+                            />
+                            <Chip
+                              label={leg.duration.text}
+                              size="small"
+                              variant="outlined"
+                            />
                           </Box>
                         }
                       />
