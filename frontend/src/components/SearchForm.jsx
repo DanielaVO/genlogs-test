@@ -51,13 +51,26 @@ export default function SearchForm({ onSearch, onClear }) {
       </Typography>
 
       <Box component="form" onSubmit={handleSubmit}>
-      <Grid container spacing={2} justifyContent="center">
-        <Grid item xs={12} md={6}>
-          <CityAutocomplete label="From City" value={from} onChange={setFrom} />
+      <Grid container spacing={2} justifyContent="center" alignItems="center">
+        <Grid item xs={12}>
+          <CityAutocomplete
+            label="From City"
+            value={from}
+            onChange={setFrom}
+            fullWidth
+            sx={{ with: "200px"}} // 👈 ancho fijo centrado
+          />
         </Grid>
-        <Grid item xs={12} md={6}>
-          <CityAutocomplete label="To City" value={to} onChange={setTo} />
+        <Grid item xs={12}>
+          <CityAutocomplete
+            label="To City"
+            value={to}
+            onChange={setTo}
+            fullWidth
+            sx={{ with: "200px" }}
+          />
         </Grid>
+
       </Grid>
 
         <Box sx={{ textAlign: "center", mt: 3 }}>

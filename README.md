@@ -115,3 +115,34 @@ The frontend will open automatically at `http://localhost:3000`.
     ```
 
 ---
+
+## 💅 Code Quality
+
+This project uses `black` for code formatting, `isort` for import sorting, and `ruff` for linting in the backend.
+
+1.  **Go to the backend directory** and activate the virtual environment:
+    ```sh
+    cd backend
+    source venv/bin/activate # On Windows, use `venv\Scripts\activate`
+    ```
+
+2.  **Install development dependencies**:
+    ```sh
+    pip install -r requirements-dev.txt
+    ```
+
+3.  **Run the tools**:
+    The most reliable way to run the tools is by using `python -m <tool>`. This avoids problems with the system PATH.
+    ```sh
+    # Formatear código con black y ruff
+    python -m black .
+    python -m ruff format .
+
+    # Check for linting issues with ruff
+    python -m ruff check .
+
+    # Let ruff try to fix issues automatically (including import order)
+    python -m ruff check . --fix
+    ```
+
+---

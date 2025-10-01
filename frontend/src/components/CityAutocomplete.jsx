@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Autocomplete, TextField } from "@mui/material";
 
-export default function CityAutocomplete({ label, value, onChange }) {
+export default function CityAutocomplete({ label, value, onChange, fullWidth }) {
   const [options, setOptions] = useState([]);
 
   useEffect(() => {
@@ -34,15 +34,7 @@ export default function CityAutocomplete({ label, value, onChange }) {
       getOptionLabel={(option) => option.label || ""}
       inputValue={value}
       onInputChange={(e, newValue) => onChange(newValue)}
-      fullWidth
-      slotProps={{
-        paper: {
-          sx: {
-            width: "100%",
-            maxWidth: "100%",
-          },
-        },
-      }}
+      fullWidth={fullWidth}
       renderInput={(params) => (
         <TextField
           {...params}

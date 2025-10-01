@@ -1,5 +1,6 @@
-from fastapi import FastAPI, APIRouter, HTTPException, Depends
+from fastapi import APIRouter, Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+
 from app.schemas import SearchRequest, SearchResponse
 from app.services import get_carriers
 
@@ -22,6 +23,7 @@ search_router = APIRouter(
     tags=["Logistics Search"],
     responses={404: {"description": "Not found"}},
 )
+
 
 def validate_search_payload(payload: SearchRequest):
     """
@@ -46,23 +48,25 @@ def health():
 def search_routes(payload: SearchRequest = Depends(validate_search_payload)):
     """
     ## Search Active Carriers Between Two Cities
-    
-    Retrieves a list of available carriers that service the specified route, 
+
+    Retrieves a list of available carriers that service the specified route,
     including dynamically generated data for their active trucks.
-    
+
     **Path:** `/v1/search`
-    
+
     **Inputs:**
     - `from_city`: The departure city (e.g., "New York").
     - `to_city`: The destination city (e.g., "Washington D.C.").
-    
+
     **Returns:** A structured JSON object containing the route details and the list of carriers.
     """
     try:
         carriers_data = get_carriers(payload.from_city, payload.to_city)
-        
-        print(f"INFO: Found {len(carriers_data)} carriers for route: {payload.from_city} -> {payload.to_city}")
-        
+
+        print(
+            f"INFO: Found {len(carriers_data)} carriers for route: {payload.from_city} -> {payload.to_city}"
+        )
+
         return SearchResponse(
             from_city=payload.from_city,
             to_city=payload.to_city,
@@ -75,5 +79,6 @@ def search_routes(payload: SearchRequest = Depends(validate_search_payload)):
             status_code=500,
             detail="An unexpected error occurred while processing the request.",
         )
+
 
 app.include_router(search_router)
