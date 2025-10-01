@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 import SearchForm from "../SearchForm";
@@ -8,13 +8,29 @@ jest.mock("@mui/icons-material/Search", () => () => (
   <div data-testid="search-icon" />
 ));
 
-jest.mock("../CityAutocomplete", () => ({ label, value, onChange }) => (
-  <input
-    aria-label={label}
-    value={value}
-    onChange={(e) => onChange(e.target.value)}
-  />
-));
+jest.mock(
+  "@mui/material/Button",
+  () =>
+    ({ children, startIcon, variant, color, ...rest }) => (
+      <button {...rest}>{children}</button>
+    )
+);
+
+jest.mock(
+  "../CityAutocomplete",
+  () =>
+    ({ label, value, onChange, onValidChange }) => (
+      <input
+        aria-label={label}
+        value={value}
+        onChange={(e) => {
+          const newValue = e.target.value;
+          onChange(newValue);
+          onValidChange(!!newValue);
+        }}
+      />
+    )
+);
 
 describe("SearchForm Component", () => {
   const mockOnSearch = jest.fn();
@@ -56,6 +72,9 @@ describe("SearchForm Component", () => {
 
     await userEvent.clear(fromInput);
     expect(searchButton).toBeDisabled();
+
+    await userEvent.clear(toInput);
+    expect(mockOnClear).toHaveBeenCalledTimes(2);
   });
 
   test("calls onSearch with the correct values when the form is submitted", async () => {

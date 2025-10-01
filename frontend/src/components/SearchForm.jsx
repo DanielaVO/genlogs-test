@@ -1,3 +1,4 @@
+// SearchForm.jsx
 import React, { useState, useEffect } from "react";
 import { Paper, Typography, Box, Button, Grid } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
@@ -6,10 +7,12 @@ import CityAutocomplete from "./CityAutocomplete";
 export default function SearchForm({ onSearch, onClear }) {
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
+  const [fromValid, setFromValid] = useState(false);
+  const [toValid, setToValid] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (from.trim() && to.trim()) {
+    if (fromValid && toValid) {
       onSearch({ from, to });
     }
   };
@@ -52,21 +55,21 @@ export default function SearchForm({ onSearch, onClear }) {
       </Typography>
 
       <Box component="form" onSubmit={handleSubmit}>
-        <Grid container spacing={2} justifyContent="center" alignItems="center">
-          <Grid item xs={12} md={12} sx={{ minWidth: "200px" }}>
+        <Grid container spacing={2} justifyContent="center">
+          <Grid item xs={12} md={10} sx={{ minWidth: "200px" }}>
             <CityAutocomplete
               label="From City"
               value={from}
               onChange={setFrom}
-              fullWidth
+              onValidChange={setFromValid}
             />
           </Grid>
-          <Grid item xs={12} md={12} sx={{ minWidth: "200px" }}>
+          <Grid item xs={12} md={10} sx={{ minWidth: "200px" }}>
             <CityAutocomplete
               label="To City"
               value={to}
               onChange={setTo}
-              fullWidth
+              onValidChange={setToValid}
             />
           </Grid>
         </Grid>
@@ -77,7 +80,7 @@ export default function SearchForm({ onSearch, onClear }) {
             variant="contained"
             size="medium"
             startIcon={<SearchIcon />}
-            disabled={!from.trim() || !to.trim()}
+            disabled={!fromValid || !toValid}
             sx={{ px: 3, py: 1, borderRadius: 2 }}
           >
             Search Routes & Carriers

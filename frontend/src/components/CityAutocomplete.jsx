@@ -5,12 +5,15 @@ export default function CityAutocomplete({
   label,
   value,
   onChange,
-  fullWidth,
+  onValidChange,
 }) {
   const [options, setOptions] = useState([]);
 
   useEffect(() => {
-    if (!value) return;
+    if (!value) {
+      setOptions([]);
+      return;
+    }
 
     const service = new window.google.maps.places.AutocompleteService();
     service.getPlacePredictions(
@@ -20,13 +23,16 @@ export default function CityAutocomplete({
         componentRestrictions: { country: "us" },
       },
       (predictions) => {
-        if (predictions) {
+        if (predictions && predictions.length > 0) {
           setOptions(
             predictions.map((p) => ({
               label: p.description,
               placeId: p.place_id,
             }))
           );
+        } else {
+          setOptions([]);
+          onValidChange?.(false);
         }
       }
     );
@@ -34,12 +40,22 @@ export default function CityAutocomplete({
 
   return (
     <Autocomplete
-      freeSolo
       options={options}
       getOptionLabel={(option) => option.label || ""}
-      inputValue={value}
-      onInputChange={(e, newValue) => onChange(newValue)}
-      fullWidth={fullWidth}
+      value={options.find((o) => o.label === value) || null}
+      onChange={(event, newValue) => {
+        if (newValue) {
+          onChange(newValue.label);
+          onValidChange?.(true);
+        } else {
+          onChange("");
+          onValidChange?.(false);
+        }
+      }}
+      onInputChange={(event, newValue) => {
+        onChange(newValue);
+      }}
+      noOptionsText="No cities found"
       renderInput={(params) => (
         <TextField
           {...params}

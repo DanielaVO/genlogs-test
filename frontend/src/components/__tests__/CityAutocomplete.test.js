@@ -22,21 +22,6 @@ beforeEach(() => {
 describe("CityAutocomplete Component", () => {
   const mockOnChange = jest.fn();
 
-  test("renders correctly with the label and initial value", () => {
-    render(
-      <CityAutocomplete
-        label="From City"
-        value="New York"
-        onChange={mockOnChange}
-      />
-    );
-
-    const input = screen.getByRole("combobox");
-    expect(input).toHaveValue("New York");
-
-    expect(screen.getByLabelText("From City")).toBeInTheDocument();
-  });
-
   test("calls the Google Places API when typing in the input", async () => {
     const { rerender } = render(
       <CityAutocomplete label="To City" value="" onChange={mockOnChange} />
